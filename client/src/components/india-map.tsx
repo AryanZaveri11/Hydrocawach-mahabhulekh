@@ -10,7 +10,7 @@ export default function IndiaMap() {
       <img 
         src={indiaMapImage}
         alt="India Map"
-        className="w-full h-96 object-contain rounded-lg"
+        className="w-full h-[600px] object-contain rounded-lg"
       />
     </div>
   );
