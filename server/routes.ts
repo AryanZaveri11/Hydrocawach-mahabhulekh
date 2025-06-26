@@ -5,6 +5,31 @@ import { landRecordSearchSchema } from "@shared/schema";
 import { z } from "zod";
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Get all countries
+  app.get("/api/countries", async (req, res) => {
+    try {
+      const countries = await storage.getAllCountries();
+      res.json(countries);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch countries" });
+    }
+  });
+
+  // Get states by country ID
+  app.get("/api/countries/:countryId/states", async (req, res) => {
+    try {
+      const countryId = parseInt(req.params.countryId);
+      if (isNaN(countryId)) {
+        return res.status(400).json({ error: "Invalid country ID" });
+      }
+      
+      const states = await storage.getStatesByCountryId(countryId);
+      res.json(states);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch states" });
+    }
+  });
+
   // Get all states
   app.get("/api/states", async (req, res) => {
     try {

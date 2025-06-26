@@ -2,8 +2,17 @@ import { pgTable, text, serial, integer, boolean, timestamp, json } from "drizzl
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
+// Countries table
+export const countries = pgTable("countries", {
+  id: serial("id").primaryKey(),
+  code: text("code").notNull().unique(),
+  nameEn: text("name_en").notNull(),
+  nameHi: text("name_hi").notNull(),
+});
+
 export const states = pgTable("states", {
   id: serial("id").primaryKey(),
+  countryId: integer("country_id").notNull(),
   code: text("code").notNull().unique(),
   nameEn: text("name_en").notNull(),
   nameHi: text("name_hi").notNull(),
@@ -70,6 +79,7 @@ export const searchRequests = pgTable("search_requests", {
 });
 
 // Insert schemas
+export const insertCountrySchema = createInsertSchema(countries).omit({ id: true });
 export const insertStateSchema = createInsertSchema(states).omit({ id: true });
 export const insertDistrictSchema = createInsertSchema(districts).omit({ id: true });
 export const insertTalukaSchema = createInsertSchema(talukas).omit({ id: true });
@@ -82,6 +92,7 @@ export const insertSearchRequestSchema = createInsertSchema(searchRequests).omit
 });
 
 // Types
+export type Country = typeof countries.$inferSelect;
 export type State = typeof states.$inferSelect;
 export type District = typeof districts.$inferSelect;
 export type Taluka = typeof talukas.$inferSelect;
@@ -89,6 +100,7 @@ export type Village = typeof villages.$inferSelect;
 export type LandRecord = typeof landRecords.$inferSelect;
 export type SearchRequest = typeof searchRequests.$inferSelect;
 
+export type InsertCountry = z.infer<typeof insertCountrySchema>;
 export type InsertState = z.infer<typeof insertStateSchema>;
 export type InsertDistrict = z.infer<typeof insertDistrictSchema>;
 export type InsertTaluka = z.infer<typeof insertTalukaSchema>;
@@ -101,6 +113,7 @@ export const landRecordSearchSchema = z.object({
   recordType: z.enum(["7-12", "8a", "property-card", "k-prat"]),
   searchMode: z.enum(["manual", "uid"]),
   propertyUid: z.string().optional(),
+  countryId: z.number().optional(),
   stateId: z.number().optional(),
   districtId: z.number().optional(),
   talukaId: z.number().optional(),

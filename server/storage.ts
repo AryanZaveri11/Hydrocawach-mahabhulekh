@@ -1,12 +1,18 @@
 import { 
-  State, District, Taluka, Village, LandRecord, SearchRequest,
+  Country, State, District, Taluka, Village, LandRecord, SearchRequest,
   InsertState, InsertDistrict, InsertTaluka, InsertVillage, 
   InsertLandRecord, InsertSearchRequest 
 } from "@shared/schema";
 
 export interface IStorage {
+  // Countries
+  getAllCountries(): Promise<Country[]>;
+  getCountryById(id: number): Promise<Country | undefined>;
+  getCountryByCode(code: string): Promise<Country | undefined>;
+
   // States
   getAllStates(): Promise<State[]>;
+  getStatesByCountryId(countryId: number): Promise<State[]>;
   getStateById(id: number): Promise<State | undefined>;
   getStateByCode(code: string): Promise<State | undefined>;
 
@@ -34,6 +40,7 @@ export interface IStorage {
 }
 
 export class MemStorage implements IStorage {
+  private countries: Map<number, Country> = new Map();
   private states: Map<number, State> = new Map();
   private districts: Map<number, District> = new Map();
   private talukas: Map<number, Taluka> = new Map();
@@ -41,6 +48,7 @@ export class MemStorage implements IStorage {
   private landRecords: Map<number, LandRecord> = new Map();
   private searchRequests: Map<number, SearchRequest> = new Map();
   
+  private currentCountryId = 1;
   private currentStateId = 1;
   private currentDistrictId = 1;
   private currentTalukaId = 1;
@@ -53,7 +61,21 @@ export class MemStorage implements IStorage {
   }
 
   private initializeData() {
-    // Initialize Indian states
+    // Initialize countries
+    const countriesData = [
+      { code: "IN", nameEn: "India", nameHi: "भारत" },
+      { code: "US", nameEn: "United States", nameHi: "संयुक्त राज्य अमेरिका" },
+      { code: "CA", nameEn: "Canada", nameHi: "कनाडा" },
+      { code: "AU", nameEn: "Australia", nameHi: "ऑस्ट्रेलिया" },
+      { code: "UK", nameEn: "United Kingdom", nameHi: "यूनाइटेड किंगडम" }
+    ];
+
+    countriesData.forEach(country => {
+      const id = this.currentCountryId++;
+      this.countries.set(id, { id, ...country });
+    });
+
+    // Initialize Indian states (all belong to India - countryId: 1)
     const statesData = [
       { code: "AP", nameEn: "Andhra Pradesh", nameHi: "आंध्र प्रदेश", nameLocal: "ఆంధ్ర ప్రదేశ్" },
       { code: "AR", nameEn: "Arunachal Pradesh", nameHi: "अरुणाचल प्रदेश", nameLocal: "Arunachal Pradesh" },
@@ -96,7 +118,7 @@ export class MemStorage implements IStorage {
 
     statesData.forEach(state => {
       const id = this.currentStateId++;
-      this.states.set(id, { id, ...state });
+      this.states.set(id, { id, countryId: 1, ...state, nameLocal: state.nameLocal || null });
     });
 
     // Initialize sample districts for Maharashtra (can be expanded)
@@ -185,8 +207,25 @@ export class MemStorage implements IStorage {
     });
   }
 
+  // Country methods
+  async getAllCountries(): Promise<Country[]> {
+    return Array.from(this.countries.values());
+  }
+
+  async getCountryById(id: number): Promise<Country | undefined> {
+    return this.countries.get(id);
+  }
+
+  async getCountryByCode(code: string): Promise<Country | undefined> {
+    return Array.from(this.countries.values()).find(c => c.code === code);
+  }
+
   async getAllStates(): Promise<State[]> {
     return Array.from(this.states.values());
+  }
+
+  async getStatesByCountryId(countryId: number): Promise<State[]> {
+    return Array.from(this.states.values()).filter(s => s.countryId === countryId);
   }
 
   async getStateById(id: number): Promise<State | undefined> {

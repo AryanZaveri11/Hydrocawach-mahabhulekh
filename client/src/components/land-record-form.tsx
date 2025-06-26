@@ -8,7 +8,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import { landRecordSearchSchema, type LandRecordSearchForm, type State, type District, type Taluka, type Village } from "@shared/schema";
+import { landRecordSearchSchema, type LandRecordSearchForm, type Country, type State, type District, type Taluka, type Village } from "@shared/schema";
 import { RECORD_TYPES, LANGUAGES } from "@/lib/constants";
 import { apiRequest } from "@/lib/queryClient";
 import { useLocation } from "wouter";
@@ -30,10 +30,12 @@ export default function LandRecordForm({ selectedStateFromMap }: LandRecordFormP
       searchMode: "manual",
       language: "hindi",
       mobileNumber: "",
-      captcha: ""
+      captcha: "",
+      countryId: 1 // Default to India
     }
   });
 
+  const watchedCountryId = form.watch("countryId");
   const watchedStateId = form.watch("stateId");
   const watchedDistrictId = form.watch("districtId");
   const watchedTalukaId = form.watch("talukaId");
@@ -45,8 +47,19 @@ export default function LandRecordForm({ selectedStateFromMap }: LandRecordFormP
     }
   }, [selectedStateFromMap, form]);
 
-  // Fetch states
+  // Fetch countries
+  const { data: countries } = useQuery<Country[]>({
+    queryKey: ["/api/countries"],
+  });
+
+  // Fetch states by country
   const { data: states } = useQuery<State[]>({
+    queryKey: ["/api/countries", watchedCountryId, "states"],
+    enabled: !!watchedCountryId,
+  });
+
+  // Fetch all states (fallback)
+  const { data: allStates } = useQuery<State[]>({
     queryKey: ["/api/states"],
   });
 
@@ -194,6 +207,41 @@ export default function LandRecordForm({ selectedStateFromMap }: LandRecordFormP
               />
             ) : (
               <>
+                {/* Country Selection */}
+                <FormField
+                  control={form.control}
+                  name="countryId"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>देश (Country) <span className="text-red-500">*</span></FormLabel>
+                      <Select 
+                        onValueChange={(value) => {
+                          field.onChange(parseInt(value));
+                          form.setValue("stateId", undefined);
+                          form.setValue("districtId", undefined);
+                          form.setValue("talukaId", undefined);
+                          form.setValue("villageId", undefined);
+                        }}
+                        value={field.value?.toString()}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="देश चुनें (Select Country)" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {countries?.map((country) => (
+                            <SelectItem key={country.id} value={country.id.toString()}>
+                              {country.nameEn} ({country.nameHi})
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
                 {/* State Selection */}
                 <FormField
                   control={form.control}
@@ -216,7 +264,7 @@ export default function LandRecordForm({ selectedStateFromMap }: LandRecordFormP
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {states?.map((state) => (
+                          {(states || allStates)?.map((state) => (
                             <SelectItem key={state.id} value={state.id.toString()}>
                               {state.nameHi} ({state.nameEn})
                             </SelectItem>
