@@ -106,6 +106,9 @@ The application uses a hierarchical geographical structure:
 
 Changelog:
 - June 26, 2025. Initial setup
+- June 26, 2025. Added country selection above state selection in form
+- June 26, 2025. Removed related services section
+- June 26, 2025. Integrated authentic India map image in India Map section
 
 ## User Preferences
 

@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import indiaMapImage from "@assets/india map_1750964484634.webp";
 
 interface IndiaMapProps {
   onStateSelect: (stateId: number) => void;
@@ -23,11 +24,10 @@ export default function IndiaMap({ onStateSelect, selectedState }: IndiaMapProps
       
       {/* Interactive India map with administrative divisions */}
       <div className="relative w-full h-96 bg-gradient-to-b from-blue-50 to-green-50 rounded-lg border-2 border-primary/20 overflow-hidden">
-        <div 
-          className="w-full h-full bg-cover bg-center rounded-lg opacity-80"
-          style={{
-            backgroundImage: "url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=600')"
-          }}
+        <img 
+          src={indiaMapImage}
+          alt="India Map"
+          className="w-full h-full object-cover rounded-lg"
         />
         
         {/* Interactive state overlay buttons */}
