@@ -43,76 +43,7 @@ export default function Home() {
           <LandRecordForm selectedStateFromMap={selectedStateFromMap} />
         </div>
 
-        {/* Government Services Links */}
-        <div className="mt-12 bg-white rounded-lg shadow-lg p-6">
-          <h3 className="text-xl font-semibold text-primary mb-6 text-center">
-            संबंधित सेवा (Related Services)
-          </h3>
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-            {/* Digital Satbara equivalent */}
-            <a href="#" className="flex flex-col items-center p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow">
-              <div className="w-16 h-16 bg-primary/10 rounded-lg mb-2 overflow-hidden">
-                <div 
-                  className="w-full h-full bg-cover bg-center"
-                  style={{
-                    backgroundImage: "url('https://images.unsplash.com/photo-1555992336-03a23c7b20ee?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=64&h=64')"
-                  }}
-                />
-              </div>
-              <span className="text-xs text-center font-medium">डिजिटल सतबारा</span>
-            </a>
-
-            {/* E-Sign Services */}
-            <a href="#" className="flex flex-col items-center p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow">
-              <div className="w-16 h-16 bg-green-50 rounded-lg mb-2 overflow-hidden">
-                <div 
-                  className="w-full h-full bg-cover bg-center"
-                  style={{
-                    backgroundImage: "url('https://images.unsplash.com/photo-1450101499163-c8848c66ca85?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=64&h=64')"
-                  }}
-                />
-              </div>
-              <span className="text-xs text-center font-medium">ई-साइन</span>
-            </a>
-
-            {/* Land Records */}
-            <a href="#" className="flex flex-col items-center p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow">
-              <div className="w-16 h-16 bg-yellow-50 rounded-lg mb-2 overflow-hidden">
-                <div 
-                  className="w-full h-full bg-cover bg-center"
-                  style={{
-                    backgroundImage: "url('https://images.unsplash.com/photo-1589829545856-d10d557cf95f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=64&h=64')"
-                  }}
-                />
-              </div>
-              <span className="text-xs text-center font-medium">भूमि अभिलेख</span>
-            </a>
-
-            {/* Registry Services */}
-            <a href="#" className="flex flex-col items-center p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow">
-              <div className="w-16 h-16 bg-red-50 rounded-lg mb-2 flex items-center justify-center">
-                <span className="text-2xl">📄</span>
-              </div>
-              <span className="text-xs text-center font-medium">रजिस्ट्री</span>
-            </a>
-
-            {/* Court Services */}
-            <a href="#" className="flex flex-col items-center p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow">
-              <div className="w-16 h-16 bg-purple-50 rounded-lg mb-2 flex items-center justify-center">
-                <span className="text-2xl">⚖️</span>
-              </div>
-              <span className="text-xs text-center font-medium">न्यायालय</span>
-            </a>
-
-            {/* Survey Maps */}
-            <a href="#" className="flex flex-col items-center p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow">
-              <div className="w-16 h-16 bg-indigo-50 rounded-lg mb-2 flex items-center justify-center">
-                <span className="text-2xl">🗺️</span>
-              </div>
-              <span className="text-xs text-center font-medium">सर्वे नकाशे</span>
-            </a>
-          </div>
-        </div>
+        
       </main>
 
       <Footer />
