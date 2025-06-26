@@ -24,9 +24,7 @@ export default function Home() {
           <h2 className="text-3xl font-bold text-primary mb-4">
             भूमि अभिलेख (Land Records)
           </h2>
-          <p className="text-lg text-muted-foreground mb-6">
-            गाव नमुना नंबर ७/१२, ८अ, मालमत्ता पत्रक व क-प्रत पाहणे
-          </p>
+          
           <p className="text-base text-gray-600">
             Bharat Bhulekh - A comprehensive land record system providing 7/12 extract, 8A extract, Property Card and other land documents online to citizens across India
           </p>
