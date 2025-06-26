@@ -20,7 +20,7 @@ export default function Header({ language, onLanguageChange }: HeaderProps) {
             </div>
             <div>
               <h1 className="text-xl font-bold text-primary">Hydrocawach</h1>
-              <p className="text-sm text-muted-foreground">हाइड्रोकावाच भूमि अभिलेख</p>
+              <p className="text-sm text-muted-foreground">हाइड्रोकावाच </p>
             </div>
           </div>
           
